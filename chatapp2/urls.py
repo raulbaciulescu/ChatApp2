@@ -26,11 +26,7 @@ urlpatterns = [
     path('friend/', include('friend.urls', namespace='friend')),
     path('', include('public_chat.urls')),
     path('', home, name='home'),
-
-
-
-
-
+    path('chat/', include('private_chat.urls')),
 
 
     # Password reset links (ref: https://github.com/django/django/blob/master/django/contrib/auth/views.py)

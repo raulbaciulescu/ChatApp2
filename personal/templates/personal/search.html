@@ -57,7 +57,7 @@
 				<div class="card-center px-2">
 					<h4 class="card-title">{{account.0.username}}</h4>
 					{% if account.1 %}
-					<p class="card-text"><a href="#" onclick="createOrReturnPrivateChat('{{account.0.id}}')">Send a Message</a></p>
+					<a href="{% url 'private_chat:private-chat' user1=user user2=account.0.username %}" >Send a Message</a>
 					{% endif %}
 
 				</div>

@@ -174,7 +174,7 @@
 			{% endif %}
 
 			{% if is_friend %}
-				<div class="d-flex flex-row align-items-center btn btn-primary m-2 px-4" onclick="createOrReturnPrivateChat('{{id}}')">
+				<div class="d-flex flex-row align-items-center btn btn-primary m-2 px-4" onclick="createOrReturnPrivateChat('{{ username }}', '{{ user }}')">
 					<span class="material-icons m-auto">
 					message
 					</span>
@@ -192,8 +192,11 @@
 
 <script type="text/javascript">
 
-	// called from base_js.html
-	//preloadImage("{{profile_image|safe}}", 'id_profile_image')
+    function createOrReturnPrivateChat(user1, user2){
+        var url = "{% url 'private_chat:private-chat' user1=53252623623632623 user2=10000000020 %}".replace("53252623623632623", user2).replace("10000000020", user1)
+        var win = window.open(url, "_blank")
+        win.focus()
+    }
 
 	function onFriendRequestSent(){
 		location.reload();
@@ -214,7 +217,6 @@
 	function onFriendRequestDeclined(){
 		location.reload();
 	}
-
 
 	var sendFriendRequestBtn = document.getElementById("id_send_friend_request_btn")
 	if (sendFriendRequestBtn != null){
@@ -252,8 +254,5 @@
 {% include 'friend/decline_friend_request.html' %}
 {% include 'friend/cancel_friend_request.html' %}
 {% include 'friend/remove_friend.html' %}
-{#% include 'chat/create_or_return_private_chat.html' %#}
-
-
 
 {% endblock content %}

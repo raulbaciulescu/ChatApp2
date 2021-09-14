@@ -51,3 +51,7 @@ class PublicChatMessageAdmin(admin.ModelAdmin):
         model = PublicChatMessage
 
 admin.site.register(PublicChatMessage, PublicChatMessageAdmin)
+
+
+
+

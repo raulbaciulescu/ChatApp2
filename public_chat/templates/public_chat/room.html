@@ -232,7 +232,8 @@
                 var msgText = msgInput.val()
 
                 var finalData = {
-                    'message': msgText
+                    'message': msgText,
+                    'private': false
                 }
                 socket.send(JSON.stringify(finalData))
                 msgInput.val('')

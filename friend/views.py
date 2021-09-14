@@ -173,7 +173,7 @@ def friend_list(request, *args, **kwargs):
     View for the friend list
     '''
     user = request.user
-    context = {}
+    context = {'user': user}
     if user.is_authenticated:
         user_id = kwargs.get('user_id')
         try:

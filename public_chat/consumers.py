@@ -4,8 +4,6 @@ import json
 from asgiref.sync import async_to_sync
 from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
-from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models.fields.files import ImageFieldFile
 from django.utils import timezone
 
 from public_chat.models import PublicChatRoom, PublicChatMessage
@@ -17,7 +15,6 @@ class ChatConsumer(AsyncConsumer):
             'type': 'websocket.accept',
         })
         # await asyncio.sleep(5)
-
         room = await self.get_room()
         self.room = room
         chat_room = room.title
@@ -48,7 +45,6 @@ class ChatConsumer(AsyncConsumer):
         if front_text is not None:
             dict_data = json.loads(front_text)
             message = dict_data['message']
-
             message_object = await self.create_new_chat_message(message)
             message_object_id = message_object.pk
             my_response = {
