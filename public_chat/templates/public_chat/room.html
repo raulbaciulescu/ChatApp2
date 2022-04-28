@@ -108,32 +108,32 @@
     <script src="//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
     <script>
-        var wsStart = 'ws://'
-        var loc = window.location
+        let wsStart = 'ws://'
+        let loc = window.location
         if (loc.protocol === 'https:'){
             wsStart = 'wss://'
         }
-        var endpoint = wsStart + loc.host + loc.pathname
-        var socket = new WebSocket(endpoint)
+        let endpoint = wsStart + loc.host + loc.pathname
+        let socket = new WebSocket(endpoint)
 
-        var formData = $("#form")
+        let formData = $("#form")
         //var formData = document.getElementById("form")
-        var msgInput = $("#chat-message-input")
+        let msgInput = $("#chat-message-input")
 
-        var divChatLog = $("#id_chat_log")
+        let divChatLog = $("#id_chat_log")
 
         function appendChatMessage(data, maintainPosition, isNewMessage){
-            message = data.message + '\n'
-            user = data.user + ': '
-            user_id = data.user_id
-            profile_image = data.profile_image
-            timestamp = data.timestamp
-            msg_id = data.message_id
-            createChatMessageElement(message, msg_id, user, profile_image, user_id, timestamp, maintainPosition, isNewMessage)
+            const message = data.message + '\n'
+            const user = data.user + ': '
+            const userId = data.user_id
+            const profileImage = data.profile_image
+            const timestamp = data.timestamp
+            const msgId = data.message_id
+            createChatMessageElement(message, msgId, user, profileImage, userId, timestamp, maintainPosition, isNewMessage)
         }
         function createChatMessageElement(message, msg_id, username, profile_image, user_id, timestamp, maintainPosition, isNewMessage){
-            var chatLog = document.getElementById("id_chat_log")
-            var newMessageDiv = document.createElement('div')
+            const chatLog = document.getElementById("id_chat_log")
+            const newMessageDiv = document.createElement('div')
             newMessageDiv.classList.add('d-flex')
             newMessageDiv.classList.add('flex-row')
             newMessageDiv.classList.add('message-container')
@@ -147,19 +147,19 @@
             profileImage.classList.add("img-fluid")
             profileImage.src = "{% static 'image/default_image.jpg' %}"
 
-            var profile_image_id = "id_profile_image_" + msg_id
-            profileImage.id = profile_image_id
+            const profileImageId = "id_profile_image_" + msg_id
+            profileImage.id = profileImageId
             newMessageDiv.appendChild(profileImage)
 
-            var div1 = document.createElement("div")
+            const div1 = document.createElement("div")
             div1.classList.add("d-flex")
             div1.classList.add("flex-column")
 
-            var div2 = document.createElement("div")
+            const div2 = document.createElement("div")
             div2.classList.add("d-flex")
             div2.classList.add("flex-row")
 
-            var usernameSpan = document.createElement("span")
+            const usernameSpan = document.createElement("span")
             usernameSpan.addEventListener("click", function(e){
 			    selectUser(user_id)
 		    })
@@ -169,7 +169,7 @@
             div2.appendChild(usernameSpan)
 
 
-            var timestampSpan = document.createElement("span")
+            const timestampSpan = document.createElement("span")
             timestampSpan.innerHTML = timestamp
             timestampSpan.classList.add("timestamp-span")
             timestampSpan.classList.add("d-flex")
@@ -181,7 +181,7 @@
             div2.appendChild(timestampSpan)
             div1.appendChild(div2)
 
-            var msgP = document.createElement("p")
+            const msgP = document.createElement("p")
             msgP.innerHTML = message
             msgP.classList.add("msg-p")
             div1.appendChild(msgP)
@@ -191,14 +191,16 @@
             chatLog.insertBefore(newMessageDiv, chatLog.firstChild)
 
             // now that a default image is showing, load the actual image.
-            preloadImage(profile_image, profile_image_id)
+            preloadImage(profile_image, profileImageId)
         }
+
         function preloadCallback(src, elementId){
-            var img = document.getElementById(elementId)
+            const img = document.getElementById(elementId)
             img.src = src
         }
+
         function preloadImage(imgSrc, elementId){
-            var objImagePreloader = new Image();
+            const objImagePreloader = new Image();
             objImagePreloader.src = imgSrc;
             if(objImagePreloader.complete){
                 preloadCallback(objImagePreloader.src, elementId);
@@ -207,31 +209,30 @@
             else{
                 objImagePreloader.onload = function() {
                     preloadCallback(objImagePreloader.src, elementId);
-                    //    clear onLoad, IE behaves irratically with animated gifs otherwise
-                    objImagePreloader.onload=function(){};
+                    objImagePreloader.onload = function(){};
                 }
             }
         }
 
-        function selectUser(user_id){
-            var url = "{% url 'account:account' user_id=53252623623632623 %}".replace("53252623623632623", user_id)
-            var win = window.open(url, "_blank")
+        function selectUser(userId){
+            const url = "{% url 'account:account' user_id=53252623623632623 %}".replace("53252623623632623", userId)
+            const win = window.open(url, "_blank")
             win.focus()
         }
 
-        //this is the message I receiving
+        //this is the message I receive
         socket.onmessage = function(e) {
             const data = JSON.parse(e.data);
             appendChatMessage(data)
         };
 
-        socket.onopen = function(e){ //this is the message I sending
+        socket.onopen = function(e){ //this is the message I am sending
             console.log('open', e)
             formData.submit(function(event){
                 event.preventDefault()
-                var msgText = msgInput.val()
+                const msgText = msgInput.val()
 
-                var finalData = {
+                const finalData = {
                     'message': msgText,
                     'private': false
                 }
